@@ -15,9 +15,9 @@ export const ScreenIndicators = ({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        margin: 15,
       }}
     >
+
       {new Array(count).fill("1").map((_, index) => (
         <View
           style={{
@@ -25,7 +25,7 @@ export const ScreenIndicators = ({
             width: 8,
             height: 8,
             borderRadius: 8,
-            backgroundColor: index === activeIndex ? "grey" : "white",
+            backgroundColor: index === activeIndex ? "white" : "gray",
           }}
           key={index}
         />

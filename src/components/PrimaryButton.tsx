@@ -1,12 +1,12 @@
-import React from "react";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   StyleProp,
-  TextStyle,
   ViewStyle,
+  TextStyle,
 } from "react-native";
+import React from "react";
 
 export default function PrimaryButton({
   onPress,
@@ -18,7 +18,10 @@ export default function PrimaryButton({
   labelStyle?: StyleProp<TextStyle>;
 }) {
   return (
-    <TouchableOpacity style={styles.primaryButton} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.primaryButton}
+      onPress={onPress}
+    >
       <Text style={styles.primaryButtonText}>{label}</Text>
     </TouchableOpacity>
   );
@@ -33,11 +36,13 @@ const styles = StyleSheet.create({
   primaryButton:{
     paddingHorizontal: 32,
     height: 46,
-    width: 274,
+    width: 120,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: '#0074E4',
+    marginTop: 15,
+    marginLeft: 10,
   },
   primaryButtonText:{
     fontSize: 20,

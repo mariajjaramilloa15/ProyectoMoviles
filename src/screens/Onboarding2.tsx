@@ -1,13 +1,10 @@
 import React from "react";
 import { Text, StyleSheet, SafeAreaView, View, Image } from "react-native";
-import { RootStackScreenProps } from "../navigators/MainNavigator";
 import { INTRO_SCREEN_02 } from "../utils/constants";
+import PrimaryButton from "../components/PrimaryButton";
 import { ScreenIndicators } from "../components/ScreenIndicators";
-import PrimaryButton  from "../components/PrimaryButton";
 
-export const Onboarding2 = ({
-  navigation,
-}: RootStackScreenProps<"Onboarding2">) => {
+export const Onboarding2 = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.text}>
@@ -18,22 +15,28 @@ export const Onboarding2 = ({
         <Text style={{fontSize: 14, color: "white"}}>{INTRO_SCREEN_02.title}</Text>
         <Text style={{fontSize: 11, color: "#8B8B8B"}}>{INTRO_SCREEN_02.description}</Text>
       </View>
-      <ScreenIndicators count={3} activeIndex={1} />
+      <ScreenIndicators
+          count={3}
+          activeIndex={1}
+        />
+      <View style={styles.buttonContainer}>
+
       <PrimaryButton
-        label="Next"
-        style={{
-          marginTop: 40,
-          paddingHorizontal: 32,
-          height: 52,
-          borderRadius: 100,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        onPress={() => navigation.replace("Onboarding3")}
-      />
+          label="Back"
+          onPress={() => navigation.navigate("Onboarding1")}
+          style={styles.nextButton}
+        />
+        <PrimaryButton
+          label="Next"
+          onPress={() => navigation.navigate("Onboarding3")}
+          style={styles.nextButton}
+        />
+        
+        
+      </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -41,6 +44,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     justifyContent: "center",
     alignItems: "center",
+  },
+  textSlide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  nextButton: {
+    flex: 1,
+    marginHorizontal: 5,
   },
   text: {
     height: 130,
@@ -55,4 +73,4 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 0,
   },
-})
+});
