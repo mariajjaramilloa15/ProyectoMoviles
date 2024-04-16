@@ -22,14 +22,15 @@ export const StackScreen = () => {
     }
   };
 
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Usuarios</Text>
-      <View style={styles.container}>
+      <Text style = {styles.title}>Usuarios</Text>
+      <View style = {styles.container}>
         {isLoading && <Text>Cargando</Text>}
         {!isLoading && <UserList users={users}/>}
       </View>
@@ -48,6 +49,7 @@ const styles = {
   },
   title: {
     fontSize: 18,
+   padding: 15,
     fontWeight: "bold",
     textAlign: "center",
     textTransform: "uppercase",

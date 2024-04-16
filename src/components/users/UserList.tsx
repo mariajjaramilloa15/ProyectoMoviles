@@ -3,7 +3,7 @@ import { Alert, FlatList, StyleSheet, Switch, Text, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import client from "../../../api/client";
 import { TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { UserDetailModal } from "./UserDetailModal";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
@@ -21,7 +21,7 @@ export const UserList = ({ users }) => {
     useEffect(() => {
         const initialSwitchState = {};
         users.forEach((user) => {
-            initialSwitchState[user._id] = user.active;
+            initialSwitchState[user.id] = user.active;
         });
         setUserSwitchState(initialSwitchState);
     }, [users]);
@@ -66,11 +66,34 @@ export const UserList = ({ users }) => {
       };
       
     
-      const handleDeleteUser = (userId) => {
-        console.log("Eliminar usuario con id:", userId);
-      };
+      const handleDeleteUser = async (userId) => {
+        Alert.alert(
+            "Eliminar Usuario",
+            "¿Está seguro de eliminar este usuario?",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel",
+                },
+                {
+                    text: "Eliminar",
+                    onPress: async () => {
+                        try {
+                            await client.delete( `/users/delete/${userId}` );
+                            console.log("Usuario eliminado exitosamente");
+                            Alert.alert("Usuario eliminado exitosamente");
+                        } catch (error) {
+                            console.error("Error al eliminar el usuario", error);
+                        }
+                    },
+                    style: "destructive",
+                },
+            ]
+        );
+    };  
     
     const renderUserItem = ({ item }) => (
+        console.log(item.id),
         <ListItem
           bottomDivider
           style={styles.listItem}
@@ -96,31 +119,33 @@ export const UserList = ({ users }) => {
             <View style={styles.switchContainer}>
                 <Switch
                   trackColor={{ false:"767577", true: "767577" }}
-                  thumbColor={ userSwitchState[item._id] ? "#f5dd4b" : "#f4f3f4" }
+                  thumbColor={ userSwitchState[item.id] ? "#f5dd4b" : "#f4f3f4" }
                   ios_backgroundColor="#3e3e3e"
-                  onValueChange={() => toggleSwitch(item._id)}
-                  value={userSwitchState[item._id]}
+                  onValueChange={() => toggleSwitch(item.id)}
+                  value={userSwitchState[item.id]}
                 />
             </View>
             <View style={styles.actionsContainer}>
-                <TouchableOpacity onPress={() => handleEditUser(item._id)}>
-                    <Ionicons name="create-outline" size={22} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleDeleteUser(item._id)}>
-                    <Ionicons name="trash-outline" size={22} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleDetailUser(item._id)}>
+                <TouchableOpacity onPress={() => handleEditUser(item.id)}>
                     <Ionicons name="search-outline" size={22} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDetailUser(item.id)}>
+                    <Ionicons name="pencil-outline" size={22} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDeleteUser(item.id)}>
+                    <Ionicons name="trash-outline" size={22} color="black" />
                 </TouchableOpacity>
             </View>
         </ListItem>
+
     );
     return (
         <>
+           
           <FlatList
             data={users}
             renderItem={renderUserItem}
-            keyExtractor={(item) => item._id}
+            keyExtractor={(item) => item.id}
             style={styles.container}
           />
           <UserDetailModal
@@ -167,4 +192,12 @@ const styles = StyleSheet.create({
         width: 60,
         marginRight: 5,
     },
+    refresh:{
+        marginLeft: 300,
+    },
+    text:{
+        fontSize: 5,
+        fontWeight: "bold",
+        marginBottom: 20,
+    }
 });
